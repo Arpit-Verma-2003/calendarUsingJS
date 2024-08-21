@@ -27,6 +27,7 @@ function openModal(date){
         console.log('Event Already Exists');
         document.getElementById('eventText').innerText = eventForDay.title;
         deleteEventModal.style.display = 'block';
+        backDrop.style.display = 'block';
     }
     // if not then set newEventModal style display to block from hidden
     else{
