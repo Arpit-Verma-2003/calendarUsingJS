@@ -78,7 +78,7 @@ body {
     background-color: #FFFCFF !important;
     box-shadow: none !important;
   }
-  #newEventModal, #deleteEventModal {
+  #newEventModal, #deleteEventModal ,#eventExistsModal {
     display: none;
     z-index: 20;
     padding: 25px;
@@ -104,14 +104,18 @@ body {
   #eventTitleInput.error {
     border: 2px solid red;
   }
-  #cancelButton, #deleteButton {
+  #cancelButton, #deleteButton , #addEvent , #deleteExistButton {
     background-color: #d36c6c;
   }
-  #saveButton, #closeButton {
+  #saveButton, #closeButton ,#close2Button ,#close3Button,#deleteButtonEvent {
     background-color: #92a1d1;
+  }
+  #deleteButtonEvent{
+    margin: 10px;
   }
   #eventText {
     font-size: 14px;
+  }or: white;
   }
   #modalBackDrop {
     display: none;

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="container">
+    <div id="container" >
         <div id="header">
             <div id="monthYear"></div>
             <div>
@@ -28,16 +28,24 @@
         <div id="calendar"></div>
     </div>
     <div id="newEventModal">
-        <h2>New Event</h2>
+        <h2>Add New Event</h2>
         <input type="text" id="eventTitleInput" placeholder="Event Name"/>
         <button id="saveButton">Save Event</button>
         <button id="cancelButton">Cancel</button>
+        <button id="close3Button">Close</button>
     </div>
     <div id="deleteEventModal">
         <h2>Event</h2>
         <p id="eventText">Event Name</p>
         <button id="deleteButton">Delete Event</button>
         <button id="closeButton">Cancel</button>
+    </div>
+    <div id="eventExistsModal">
+        <h2>Below Event/s Already Exists</h2>
+        <p id="eventText2"></p>
+        <button id="addEvent">Add Event</button>
+        <button id="close2Button">Cancel</button>
+        
     </div>
     <!-- modal back drop used to make focus on the upper modal by blacking out bg -->
     <div id="modalBackDrop"></div>

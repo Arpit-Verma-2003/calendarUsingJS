@@ -12,8 +12,11 @@ let events = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('e
 const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const newEventModal = document.getElementById('newEventModal');
 const deleteEventModal = document.getElementById('deleteEventModal');
+const eventExistsModal = document.getElementById('eventExistsModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
+const switchModeBtn = document.getElementById('switchModeBtn');
+const container = document.getElementById('container');
 // calendar variable so as to not again and again reference it
 const calendar = document.getElementById('calendar');
 
@@ -25,8 +28,24 @@ function openModal(date){
     const eventForDay = events.find(e=>e.date===clicked);
     if(eventForDay){
         console.log('Event Already Exists');
-        document.getElementById('eventText').innerText = eventForDay.title;
-        deleteEventModal.style.display = 'block';
+        eventExistsModal.style.display = 'block';
+        // deleteEventModal.style.display = 'block';
+        const eventTextElement = document.getElementById('eventText2');
+        eventTextElement.innerHTML = ''; // Clear previous content
+
+        eventForDay.events.forEach(event => {
+            const eventItem = document.createElement('div');
+            eventItem.innerText = event.title;
+
+            // Create delete button for each event
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerText = "Delete";
+            deleteBtn.id = 'deleteButtonEvent'
+            deleteBtn.addEventListener('click', () => deleteEvent(event.title));
+
+            eventItem.appendChild(deleteBtn);
+            eventTextElement.appendChild(eventItem);
+        });
         backDrop.style.display = 'block';
     }
     // if not then set newEventModal style display to block from hidden
@@ -88,7 +107,8 @@ function load(){
             if(eventForDay){
                 const eventDiv = document.createElement('div');
                 eventDiv.classList.add('event');
-                eventDiv.innerText = eventForDay.title;
+                eventDiv.innerText = eventForDay.events[0].title;
+                if(eventForDay.events[1]) eventDiv.innerText+= ' & More';
                 daySquare.appendChild(eventDiv);
             }
             // on click on daysqaure , openmodal
@@ -101,7 +121,6 @@ function load(){
         // in the calendar div , append the newly created div added daySquare
         calendar.appendChild(daySquare);
     }
-
 }
 
 // function for closing the modal 
@@ -110,6 +129,7 @@ function closeModal(){
     newEventModal.style.display = 'none';
     backDrop.style.display = 'none';
     deleteEventModal.style.display = 'none';
+    eventExistsModal.style.display = 'none';
     // set the clicked date value and input field back to none 
     clicked = null;
     eventTitleInput.value = '';
@@ -118,32 +138,61 @@ function closeModal(){
 }
 // function for save event
 function saveEvent(){
+    eventExistsModal.style.display = 'none';
+    newEventModal.style.display = 'block';
     // if input value exists then
     if(eventTitleInput.value){
         // remove the class error if already there
         eventTitleInput.classList.remove('error');
-        // push the event in the events array
-        events.push({
-            date:clicked,
-            title:eventTitleInput.value
-        });
-        // add the event into the local storage
+        // Find if the date already has events
+        const existingEventIndex = events.findIndex(e => e.date === clicked);
+
+        if (existingEventIndex > -1) {
+            // If the date exists, push the new event to that date's array
+            if (!events[existingEventIndex].events) {
+                events[existingEventIndex].events = []; // Ensure 'events' is an array
+            }
+            events[existingEventIndex].events.push({ title: eventTitleInput.value });
+        } else {
+            // If the date doesn't exist, create a new entry with an array
+            events.push({
+                date: clicked,
+                events: [{ title: eventTitleInput.value }] // Store the event in an array
+            });
+        }
         localStorage.setItem('events',JSON.stringify(events));
+        alert('Event Saved , Kindly Click Close')
         console.log('saved in local storage');
     }
     // if input is empty then add error class
     else{
         eventTitleInput.classList.add('error');
     }
-    // at end , close the modal
+   
+}
+
+function callCloseModal(){
     closeModal();
 }
 
-function deleteEvent(){
-    events = events.filter(e=>e.date!==clicked);
-    localStorage.setItem('events',JSON.stringify(events));
-    closeModal();
+function deleteEvent(selectedEventTitle){
+    const eventForDay = events.find(e => e.date === clicked);
+
+    if (eventForDay) {
+        // Filter out the selected event
+        eventForDay.events = eventForDay.events.filter(event => event.title !== selectedEventTitle);
+
+        // If no events remain for that date, remove the date entry altogether
+        if (eventForDay.events.length === 0) {
+            events = events.filter(e => e.date !== clicked);
+        }
+    // events = events.filter(e=>e.date!==clicked);
+        localStorage.setItem('events',JSON.stringify(events));
+        alert('Event Deleted');
+        closeModal();
+    }
 }
+
 
 function initButtons(){
     document.getElementById('nextButton').addEventListener('click',()=>{
@@ -160,8 +209,11 @@ function initButtons(){
     });
     document.getElementById('cancelButton').addEventListener('click',closeModal);
     document.getElementById('saveButton').addEventListener('click',saveEvent);
+    document.getElementById('addEvent').addEventListener('click',saveEvent);
     document.getElementById('deleteButton').addEventListener('click',deleteEvent);
     document.getElementById('closeButton').addEventListener('click',closeModal);
+    document.getElementById('close2Button').addEventListener('click',closeModal);
+    document.getElementById('close3Button').addEventListener('click',closeModal);
 }
 initButtons();
 // load function call initially when the javascript loads
