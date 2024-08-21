@@ -11,6 +11,7 @@ let events = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('e
 // weekdays array to determine the padding days
 const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const newEventModal = document.getElementById('newEventModal');
+const deleteEventModal = document.getElementById('deleteEventModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
 // calendar variable so as to not again and again reference it
@@ -24,6 +25,8 @@ function openModal(date){
     const eventForDay = events.find(e=>e.date===clicked);
     if(eventForDay){
         console.log('Event Already Exists');
+        document.getElementById('eventText').innerText = eventForDay.title;
+        deleteEventModal.style.display = 'block';
     }
     // if not then set newEventModal style display to block from hidden
     else{
@@ -70,9 +73,25 @@ function load(){
         daySquare.classList.add('day');
         // if i>padding days , hence normal day
         if(i>paddingDays){
+            // highlight current day
+            if(day === i-paddingDays && nav === 0){
+                daySquare.id = 'currentDay';
+            }
             // set inner text(date)
             daySquare.innerText = i-paddingDays;
-            daySquare.addEventListener('click',()=> openModal(`${month+1}/${i-paddingDays}/${year}`));
+            // store current date
+            const currDate = `${month+1}/${i-paddingDays}/${year}`;
+            // check if event exists on this date
+            const eventForDay = events.find(e=>e.date===currDate);
+            // if yes then add this event to daysquare
+            if(eventForDay){
+                const eventDiv = document.createElement('div');
+                eventDiv.classList.add('event');
+                eventDiv.innerText = eventForDay.title;
+                daySquare.appendChild(eventDiv);
+            }
+            // on click on daysqaure , openmodal
+            daySquare.addEventListener('click',()=> openModal(currDate));
         }
         else{
             // or else , since it is a padding day , give padding wali css
@@ -89,25 +108,40 @@ function closeModal(){
     // set the event modal and backDrop back to none 
     newEventModal.style.display = 'none';
     backDrop.style.display = 'none';
+    deleteEventModal.style.display = 'none';
     // set the clicked date value and input field back to none 
     clicked = null;
     eventTitleInput.value = '';
     // load the calendar again
     load();
 }
-
+// function for save event
 function saveEvent(){
+    // if input value exists then
     if(eventTitleInput.value){
+        // remove the class error if already there
         eventTitleInput.classList.remove('error');
+        // push the event in the events array
         events.push({
             date:clicked,
             title:eventTitleInput.value
         });
+        // add the event into the local storage
         localStorage.setItem('events',JSON.stringify(events));
+        console.log('saved in local storage');
     }
+    // if input is empty then add error class
     else{
         eventTitleInput.classList.add('error');
     }
+    // at end , close the modal
+    closeModal();
+}
+
+function deleteEvent(){
+    events = events.filter(e=>e.date!==clicked);
+    localStorage.setItem('events',JSON.stringify(events));
+    closeModal();
 }
 
 function initButtons(){
@@ -125,6 +159,8 @@ function initButtons(){
     });
     document.getElementById('cancelButton').addEventListener('click',closeModal);
     document.getElementById('saveButton').addEventListener('click',saveEvent);
+    document.getElementById('deleteButton').addEventListener('click',deleteEvent);
+    document.getElementById('closeButton').addEventListener('click',closeModal);
 }
 initButtons();
 // load function call initially when the javascript loads
