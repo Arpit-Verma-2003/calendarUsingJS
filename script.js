@@ -39,7 +39,7 @@ function openModal(date){
 
             // Create delete button for each event
             const deleteBtn = document.createElement('button');
-            deleteBtn.innerText = "Delete";
+            deleteBtn.innerText = "Delete Event";
             deleteBtn.id = 'deleteButtonEvent'
             deleteBtn.addEventListener('click', () => deleteEvent(event.title));
 
@@ -161,14 +161,14 @@ function saveEvent(){
             });
         }
         localStorage.setItem('events',JSON.stringify(events));
-        alert('Event Saved , Kindly Click Close')
+        alert('Event Sucessfully Added');
+        closeModal();
         console.log('saved in local storage');
     }
     // if input is empty then add error class
     else{
         eventTitleInput.classList.add('error');
     }
-   
 }
 
 function callCloseModal(){
@@ -184,15 +184,24 @@ function deleteEvent(selectedEventTitle){
 
         // If no events remain for that date, remove the date entry altogether
         if (eventForDay.events.length === 0) {
+            // filter the events with date which is not clicked
             events = events.filter(e => e.date !== clicked);
         }
     // events = events.filter(e=>e.date!==clicked);
         localStorage.setItem('events',JSON.stringify(events));
-        alert('Event Deleted');
+        alert('Event Successfully Deleted');
         closeModal();
     }
 }
 
+// function to close all the events of a particular date together
+function deleteAllEvents(){
+    // filter the events with date which is not clicked
+    events = events.filter(e => e.date !== clicked);
+    localStorage.setItem('events',JSON.stringify(events));
+    alert('All Events Successfully Deleted');
+    closeModal();
+}
 
 function initButtons(){
     document.getElementById('nextButton').addEventListener('click',()=>{
@@ -213,7 +222,7 @@ function initButtons(){
     document.getElementById('deleteButton').addEventListener('click',deleteEvent);
     document.getElementById('closeButton').addEventListener('click',closeModal);
     document.getElementById('close2Button').addEventListener('click',closeModal);
-    document.getElementById('close3Button').addEventListener('click',closeModal);
+    document.getElementById('deleteAll').addEventListener('click',deleteAllEvents);
 }
 initButtons();
 // load function call initially when the javascript loads
