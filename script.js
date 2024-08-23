@@ -29,20 +29,20 @@ function openModal(date){
     // check if event exists on clicked date
     const eventForDay = events.find(e=>e.date===clicked);
     if(eventForDay){
-        console.log('Event Already Exists');
         eventExistsModal.style.display = 'block';
         const eventTextElement = document.getElementById('eventText2');
         eventTextElement.innerHTML = ''; // Clear previous content
 
         eventForDay.events.forEach(event => {
             const eventItem = document.createElement('div');
-            const fullEventTitle = event.title;
             if(event.title.length>10){
-                event.title = event.title.substring(0, 10) + '...';
+                const fullEventTitle = event.title;
+                let displayEventTitle = fullEventTitle;
+                displayEventTitle = fullEventTitle.substring(0, 10) + '...';
                 const viewBtn = document.createElement('button');
                 viewBtn.innerText = "View Full Event";
                 viewBtn.id = 'viewButtonEvent';
-                eventItem.innerText = event.title;
+                eventItem.innerText = displayEventTitle;
                 eventItem.appendChild(viewBtn);
                 viewBtn.addEventListener('click', () => viewEvent(fullEventTitle));
             } else{
@@ -76,7 +76,6 @@ function openModal(date){
 // a function called load that would be used to load our calendar or website 
 function load(){
     const dt = new Date();
-    console.log(dt);
     if(nav!==0){
         dt.setMonth(new Date().getMonth()+nav);
     }
@@ -98,7 +97,6 @@ function load(){
         day:'numeric'
     });
     const paddingDays = weekdays.indexOf(dayFirst.split(', ')[0]);
-    console.log(paddingDays);
     // at the monthYear dive, add innertext of current month & current year;
     document.getElementById('monthYear').innerText = `${dt.toLocaleDateString('en-us',{month:'long'})} ${year}`
 
