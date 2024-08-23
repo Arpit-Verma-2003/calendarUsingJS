@@ -78,7 +78,7 @@ body {
     background-color: #FFFCFF !important;
     box-shadow: none !important;
   }
-  #newEventModal, #deleteEventModal ,#eventExistsModal {
+  #newEventModal, #deleteEventModal ,#eventExistsModal,#viewEventModal {
     display: none;
     z-index: 20;
     padding: 25px;
@@ -107,10 +107,10 @@ body {
   #cancelButton, #deleteButton , #addEvent , #deleteExistButton,#deleteAll {
     background-color: #d36c6c;
   }
-  #saveButton, #closeButton ,#close2Button ,#close3Button,#deleteButtonEvent {
+  #saveButton, #closeButton ,#close2Button ,#close3Button,#deleteButtonEvent,#editButtonEvent,#viewButtonEvent {
     background-color: #92a1d1;
   }
-  #deleteButtonEvent{
+  #deleteButtonEvent,#editButtonEvent,#viewButtonEvent{
     margin: 10px;
   }
   #eventText {

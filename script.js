@@ -13,10 +13,12 @@ const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','S
 const newEventModal = document.getElementById('newEventModal');
 const deleteEventModal = document.getElementById('deleteEventModal');
 const eventExistsModal = document.getElementById('eventExistsModal');
+const viewEventModal = document.getElementById('viewEventModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
 const switchModeBtn = document.getElementById('switchModeBtn');
 const container = document.getElementById('container');
+const fullNameEvent = document.getElementById('fullNameEvent');
 // calendar variable so as to not again and again reference it
 const calendar = document.getElementById('calendar');
 
@@ -29,20 +31,36 @@ function openModal(date){
     if(eventForDay){
         console.log('Event Already Exists');
         eventExistsModal.style.display = 'block';
-        // deleteEventModal.style.display = 'block';
         const eventTextElement = document.getElementById('eventText2');
         eventTextElement.innerHTML = ''; // Clear previous content
 
         eventForDay.events.forEach(event => {
             const eventItem = document.createElement('div');
-            eventItem.innerText = event.title;
+            const fullEventTitle = event.title;
+            if(event.title.length>10){
+                event.title = event.title.substring(0, 10) + '...';
+                const viewBtn = document.createElement('button');
+                viewBtn.innerText = "View Full Event";
+                viewBtn.id = 'viewButtonEvent';
+                eventItem.innerText = event.title;
+                eventItem.appendChild(viewBtn);
+                viewBtn.addEventListener('click', () => viewEvent(fullEventTitle));
+            } else{
+                eventItem.innerText = event.title;
+            }
 
             // Create delete button for each event
             const deleteBtn = document.createElement('button');
             deleteBtn.innerText = "Delete Event";
             deleteBtn.id = 'deleteButtonEvent'
             deleteBtn.addEventListener('click', () => deleteEvent(event.title));
+            const editBtn = document.createElement('button');
+            editBtn.innerText = "Edit Event";
+            editBtn.id = 'editButtonEvent';
+            editBtn.addEventListener('click', () => editEvent(event.title));
+            
 
+            eventItem.appendChild(editBtn);
             eventItem.appendChild(deleteBtn);
             eventTextElement.appendChild(eventItem);
         });
@@ -107,6 +125,7 @@ function load(){
             if(eventForDay){
                 const eventDiv = document.createElement('div');
                 eventDiv.classList.add('event');
+                if(eventForDay.events[0].title.length>15) eventForDay.events[0].title.substring(0, 10) + '...';
                 eventDiv.innerText = eventForDay.events[0].title;
                 if(eventForDay.events[1]) eventDiv.innerText+= ' & More';
                 daySquare.appendChild(eventDiv);
@@ -130,6 +149,7 @@ function closeModal(){
     backDrop.style.display = 'none';
     deleteEventModal.style.display = 'none';
     eventExistsModal.style.display = 'none';
+    viewEventModal.style.display = 'none';
     // set the clicked date value and input field back to none 
     clicked = null;
     eventTitleInput.value = '';
@@ -194,6 +214,26 @@ function deleteEvent(selectedEventTitle){
     }
 }
 
+function editEvent(selectedEventTitle){
+    const eventForDay = events.find(e => e.date === clicked);
+    const eventToEdit = eventForDay.events.find(event => event.title === selectedEventTitle);
+    const newTitle = prompt("Enter New Title For The Event: ");
+    if(newTitle){
+        eventToEdit.title = newTitle;
+        localStorage.setItem('events',JSON.stringify(events));
+        alert('Event Successfully Edited');
+        closeModal();
+    }else{
+        alert("Event Title Can't Be Empty");
+    }
+}
+
+function viewEvent(selectedEventTitle){
+    eventExistsModal.style.display = 'none';
+    fullNameEvent.innerText = selectedEventTitle;
+    viewEventModal.style.display = 'block';
+}
+
 // function to close all the events of a particular date together
 function deleteAllEvents(){
     // filter the events with date which is not clicked
@@ -222,6 +262,7 @@ function initButtons(){
     document.getElementById('deleteButton').addEventListener('click',deleteEvent);
     document.getElementById('closeButton').addEventListener('click',closeModal);
     document.getElementById('close2Button').addEventListener('click',closeModal);
+    document.getElementById('close3Button').addEventListener('click',closeModal);
     document.getElementById('deleteAll').addEventListener('click',deleteAllEvents);
 }
 initButtons();
