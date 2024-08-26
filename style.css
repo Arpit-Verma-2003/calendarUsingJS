@@ -110,7 +110,7 @@ body {
   #saveButton, #closeButton ,#close2Button ,#close3Button, #close4Button,#deleteButtonEvent,#editButtonEvent,#viewButtonEvent,#saveChanges {
     background-color: #92a1d1;
   }
-  #deleteButtonEvent,#editButtonEvent,#viewButtonEvent{
+  #deleteButtonEvent,#editButtonEvent,#viewButtonEvent,#saveChanges{
     margin: 10px;
   }
   #eventText {

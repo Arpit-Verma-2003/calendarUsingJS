@@ -51,6 +51,12 @@ function openModal(date) {
     const eventTextElement = document.getElementById("eventText2");
     eventTextElement.innerHTML = ""; // Clear previous content
 
+    eventForDay.events.sort((a, b) => {
+        const timeA = new Date(`1970-01-01T${a.timeVal}:00`);
+        const timeB = new Date(`1970-01-01T${b.timeVal}:00`);
+        return timeA - timeB;
+      });
+
     // traverse through events array so as to get all events on a particular day
     eventForDay.events.forEach((event) => {
       // create div for each element so as to display all titles
@@ -326,10 +332,7 @@ function initButtons() {
   document.getElementById("close2Button").addEventListener("click", closeModal);
   document.getElementById("close3Button").addEventListener("click", closeModal);
   document.getElementById("close4Button").addEventListener("click", closeModal);
-  document
-    .getElementById("deleteAll")
-    .addEventListener("click", deleteAllEvents);
-  document.getElementById("saveChanges").addEventListener("click", editEvent);
+  document.getElementById("deleteAll").addEventListener("click", deleteAllEvents);
 }
 initButtons();
 // load function call initially when the javascript loads
