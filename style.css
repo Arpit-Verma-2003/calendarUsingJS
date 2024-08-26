@@ -78,20 +78,20 @@ body {
     background-color: #FFFCFF !important;
     box-shadow: none !important;
   }
-  #newEventModal, #deleteEventModal ,#eventExistsModal,#viewEventModal {
+  #newEventModal, #deleteEventModal ,#eventExistsModal,#viewEventModal,#editEventModal {
     display: none;
     z-index: 20;
     padding: 25px;
     background-color: #e8f4fa;
     box-shadow: 0px 0px 3px black;
     border-radius: 5px;
-    width: 350px;
+    width: 500px;
     top: 100px;
-    left: calc(50% - 175px);
+    left: calc(45% - 175px);
     position: absolute;
     font-family: sans-serif;
   }
-  #eventTitleInput {
+  #eventTitleInput,#eventDescInput,#eventTimeInput {
     padding: 10px;
     width: 100%;
     box-sizing: border-box;
@@ -107,7 +107,7 @@ body {
   #cancelButton, #deleteButton , #addEvent , #deleteExistButton,#deleteAll {
     background-color: #d36c6c;
   }
-  #saveButton, #closeButton ,#close2Button ,#close3Button,#deleteButtonEvent,#editButtonEvent,#viewButtonEvent {
+  #saveButton, #closeButton ,#close2Button ,#close3Button, #close4Button,#deleteButtonEvent,#editButtonEvent,#viewButtonEvent,#saveChanges {
     background-color: #92a1d1;
   }
   #deleteButtonEvent,#editButtonEvent,#viewButtonEvent{

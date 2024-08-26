@@ -30,6 +30,8 @@
     <div id="newEventModal">
         <h2>Add New Event</h2>
         <input type="text" id="eventTitleInput" placeholder="Event Name"/>
+        <input type="text" id="eventDescInput" placeholder="Event Description"/>
+        <input type="time" id="eventTimeInput" placeholder="Event Time"/>
         <button id="saveButton">Save Event</button>
         <button id="cancelButton">Cancel</button>
     </div>
@@ -48,9 +50,19 @@
         
     </div>
     <div id="viewEventModal">
-        <h3>Full Name Of The Event</h3>
+        <h3>Event Details</h3>
         <p id="fullNameEvent"></p>
+        <p id="fullDescEvent"></p>
+        <p id="fullTimeEvent"></p>
         <button id="close3Button">Close</button>
+    </div>
+    <div id="editEventModal">
+        <h3>Edit Event</h3>
+        <input type="text" id="editEventTitleInput" placeholder="Event Name"/>
+        <input type="text" id="editEventDescInput" placeholder="Event Description"/>
+        <input type="time" id="editEventTimeInput" placeholder="Event Time"/>
+        <button id="saveChanges">Save Changes</button>
+        <button id="close4Button">Close</button>
     </div>
     <!-- modal back drop used to make focus on the upper modal by blacking out bg -->
     <div id="modalBackDrop"></div>
